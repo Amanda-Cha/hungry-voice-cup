@@ -6,40 +6,41 @@
     <title>第2屆窮嘶盃歌王歌后爭霸戰</title>
     <style>
         :root { --primary: #ff4757; --accent: #ff9f43; --bg: #1e2124; --card: #36393e; --btn-light: #57606f; }
-        body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
         .container { width: 100%; max-width: 500px; text-align: center; }
         
-        /* 標題置中優化 */
-        h1 { color: var(--accent); font-size: 1.6rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 20px; line-height: 1.4; }
+        h1 { color: var(--accent); font-size: 1.6rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 20px; line-height: 1.4; text-align: center; }
         
-        /* 給分標準區 */
         .rules { background: #2f3136; padding: 12px; border-radius: 10px; font-size: 0.85rem; text-align: left; margin-bottom: 20px; border-left: 5px solid var(--accent); line-height: 1.6; }
 
-        /* 選手選擇區 - 底色調亮 */
-        .player-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .player-btn { background: var(--btn-light); border: 2px solid #8395a7; color: white; padding: 15px 5px; border-radius: 12px; cursor: pointer; position: relative; font-weight: bold; font-size: 1rem; transition: all 0.3s; }
-        
-        /* 點選中狀態 - 亮橘色與發光 */
+        /* 選手選擇區 - 調亮底色 */
+        .player-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+        .player-btn { background: var(--btn-light); border: 2px solid #8395a7; color: white; padding: 12px 2px; border-radius: 12px; cursor: pointer; position: relative; font-weight: bold; font-size: 1rem; transition: all 0.2s; }
         .player-btn.active { border-color: #fff; background: var(--accent); color: #000; box-shadow: 0 0 15px rgba(255,159,67,0.6); transform: scale(1.05); }
-        .player-btn.active::after { content: "🎤"; position: absolute; top: -12px; right: -5px; font-size: 1.2rem; }
-        
-        .player-btn:disabled { opacity: 0.25; cursor: not-allowed; background: #2f3542; border-color: transparent; }
-        .count-badge { font-size: 0.75rem; display: block; margin-top: 5px; opacity: 0.8; }
+        .player-btn:disabled { opacity: 0.2; cursor: not-allowed; background: #2f3542; border-color: transparent; }
+        .count-badge { font-size: 0.7rem; display: block; margin-top: 4px; opacity: 0.9; }
 
-        /* 評分區 */
-        .score-card { background: var(--card); border-radius: 15px; padding: 20px; text-align: center; margin-bottom: 20px; border: 1px solid #4f545c; }
-        .stars { font-size: 40px; margin: 15px 0; letter-spacing: 3px; }
-        .star { cursor: pointer; color: #4f545c; transition: 0.2s; text-shadow: 0 0 2px #000; }
+        /* 評分區 & 星星縮放修正 */
+        .score-card { background: var(--card); border-radius: 15px; padding: 15px; text-align: center; margin-bottom: 20px; border: 1px solid #4f545c; }
+        .stars { display: flex; justify-content: center; align-items: center; flex-wrap: nowrap; gap: 4px; margin: 15px 0; }
+        .star { cursor: pointer; color: #4f545c; transition: 0.2s; text-shadow: 0 0 2px #000; font-size: 8.5vw; } /* 隨螢幕寬度縮放 */
+        
+        @media (min-width: 500px) { .star { font-size: 40px; } }
+
         .star.selected { color: var(--accent); text-shadow: 0 0 10px rgba(255,159,67,0.8); }
-        
         .submit-btn { width: 100%; padding: 16px; background: #2ed573; border: none; border-radius: 10px; color: white; font-weight: bold; font-size: 1.2rem; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 0 #26af5a; }
-        .submit-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #26af5a; }
 
-        /* 統計排名區 */
-        table { width: 100%; background: var(--card); border-radius: 10px; border-collapse: collapse; overflow: hidden; margin-top: 10px; }
-        th, td { padding: 14px 10px; text-align: center; border-bottom: 1px solid #2f3136; }
-        th { background: #2f3136; color: var(--accent); font-size: 0.9rem; }
-        .rank-1 { background: rgba(255, 165, 2, 0.1); color: #ffd700; font-weight: bold; }
+        /* 表格樣式 */
+        table { width: 100%; background: var(--card); border-radius: 10px; border-collapse: collapse; overflow: hidden; margin-top: 10px; font-size: 0.95rem; }
+        th, td { padding: 12px 8px; text-align: center; border-bottom: 1px solid #2f3136; }
+        th { background: #2f3136; color: var(--accent); }
+        .rank-1 { background: rgba(255, 165, 2, 0.15); color: #ffd700; font-weight: bold; }
+
+        /* 得分詳情清單 */
+        .history-section { margin-top: 30px; text-align: left; }
+        .history-list { list-style: none; padding: 0; font-size: 0.85rem; max-height: 300px; overflow-y: auto; background: #2f3136; border-radius: 10px; }
+        .history-item { padding: 8px 12px; border-bottom: 1px solid #3e4147; display: flex; justify-content: space-between; }
+        .history-item span { color: var(--accent); }
     </style>
 </head>
 <body>
@@ -49,20 +50,16 @@
 
     <div class="rules">
         <strong>⭐ 給分標準：</strong>
-        <div>6★ 超完美 🏆</div>
-        <div>5★ 很厲害 🌟</div>
-        <div>4★ 還不錯啦 👏</div>
-        <div>3★ 普普通通 🤏</div>
-        <div>2★ 你是否來不及練這首？😏</div>
-        <div>1★ 這首我唱的，1 顆星讓你們 😎</div>
+        <div>6★ 超完美 🏆 / 5★ 很厲害 🌟 / 4★ 還不錯 👏</div>
+        <div>3★ 普普通通 🤏 / 2★ 沒練好？😏 / 1★ 讓你們 😎</div>
     </div>
 
-    <p style="font-size: 0.95rem; margin-bottom: 15px;">目前進度：第 <span id="globalCount" style="color:var(--accent); font-weight:bold;">0</span> / 25 首</p>
+    <p style="font-size: 0.95rem;">進度：第 <span id="globalCount" style="color:var(--accent); font-weight:bold;">0</span> / 25 首</p>
 
     <div class="player-selector" id="btnGroup"></div>
 
     <div class="score-card">
-        <div id="statusTitle" style="font-weight: bold; font-size: 1.1rem;">🎤 請先點選演唱者</div>
+        <div id="statusTitle" style="font-weight: bold;">🎤 請先點選演唱者</div>
         <div class="stars" id="starGroup">
             <span class="star" data-value="1">★</span>
             <span class="star" data-value="2">★</span>
@@ -74,21 +71,28 @@
         <button class="submit-btn" onclick="submitData()">確認送出分數</button>
     </div>
 
+    <h3 style="margin-top:30px; color: var(--accent);">📊 目前總分排名</h3>
     <table>
-        <thead>
-            <tr><th>排名</th><th>選手</th><th>總分</th><th>進度</th></tr>
-        </thead>
+        <thead><tr><th>排名</th><th>選手</th><th>總分</th><th>進度</th></tr></thead>
         <tbody id="statBody"></tbody>
     </table>
 
-    <button onclick="resetAll()" style="margin: 40px 0; background:none; border:none; color:#747d8c; text-decoration:underline; font-size:0.8rem; cursor:pointer;">清除所有資料重來</button>
+    <div class="history-section">
+        <h3 style="color: var(--accent); text-align:center;">📝 演唱詳情回顧</h3>
+        <div class="history-list" id="historyList">
+            <div style="padding:15px; text-align:center; color:#747d8c;">尚未有評分紀錄</div>
+        </div>
+    </div>
+
+    <button onclick="resetAll()" style="margin: 40px 0; background:none; border:none; color:#747d8c; text-decoration:underline; font-size:0.8rem; cursor:pointer; width:100%;">清除所有資料重來</button>
 </div>
 
 <script>
     const players = ["曉翔", "舫如", "知誼", "阿哲", "查查"];
-    let gameData = JSON.parse(localStorage.getItem('poorSingCup_final')) || {
+    let gameData = JSON.parse(localStorage.getItem('poorSingCup_v3')) || {
         total: 0,
-        players: players.map(name => ({ name, totalScore: 0, count: 0 }))
+        players: players.map(name => ({ name, totalScore: 0, count: 0 })),
+        history: [] // 記錄每一首的詳細得分
     };
 
     let selectedPlayerIdx = -1;
@@ -97,6 +101,7 @@
     function init() {
         renderPlayerBtns();
         updateStats();
+        updateHistory();
         setupStarEvents();
     }
 
@@ -122,10 +127,7 @@
         const stars = document.querySelectorAll('.star');
         stars.forEach(s => {
             s.addEventListener('click', function() {
-                if (selectedPlayerIdx === -1) {
-                    alert("請先點選上面的演唱者！");
-                    return;
-                }
+                if (selectedPlayerIdx === -1) return alert("請先點選上面的演唱者！");
                 currentScore = parseInt(this.getAttribute('data-value'));
                 stars.forEach(star => {
                     star.classList.toggle('selected', parseInt(star.getAttribute('data-value')) <= currentScore);
@@ -138,12 +140,23 @@
         if (selectedPlayerIdx === -1) return alert("請選演唱者");
         if (currentScore === 0) return alert("請給星星");
 
+        const playerName = gameData.players[selectedPlayerIdx].name;
+        
+        // 更新數據
         gameData.players[selectedPlayerIdx].totalScore += currentScore;
         gameData.players[selectedPlayerIdx].count += 1;
         gameData.total += 1;
+        
+        // 存入詳情歷史
+        gameData.history.push({
+            songNo: gameData.total,
+            name: playerName,
+            score: currentScore
+        });
 
-        localStorage.setItem('poorSingCup_final', JSON.stringify(gameData));
+        localStorage.setItem('poorSingCup_v3', JSON.stringify(gameData));
 
+        // 重置選取
         selectedPlayerIdx = -1;
         currentScore = 0;
         document.getElementById('statusTitle').innerText = "🎤 請點選下一位演唱者";
@@ -151,14 +164,14 @@
         
         renderPlayerBtns();
         updateStats();
+        updateHistory();
 
-        if (gameData.total === 25) alert("恭喜！25 首歌全部評分完成！");
+        if (gameData.total === 25) alert("🎉 25 首歌全部評分完成！");
     };
 
     function updateStats() {
         document.getElementById('globalCount').innerText = gameData.total;
         const sorted = [...gameData.players].sort((a, b) => b.totalScore - a.totalScore);
-        
         document.getElementById('statBody').innerHTML = sorted.map((p, i) => `
             <tr class="${i === 0 && p.totalScore > 0 ? 'rank-1' : ''}">
                 <td>${i + 1}</td>
@@ -169,9 +182,25 @@
         `).join('');
     }
 
+    function updateHistory() {
+        const historyList = document.getElementById('historyList');
+        if (gameData.history.length === 0) return;
+        
+        // 依照最新順序排列（最新的在上面）
+        const reversedHistory = [...gameData.history].reverse();
+        
+        historyList.innerHTML = reversedHistory.map(item => `
+            <div class="history-item">
+                <span>第 ${item.songNo} 首</span>
+                <strong>${item.name}</strong>
+                <span>${item.score} 顆星</span>
+            </div>
+        `).join('');
+    }
+
     window.resetAll = function() {
-        if (confirm("確定要重置嗎？")) {
-            localStorage.removeItem('poorSingCup_final');
+        if (confirm("確定要重置嗎？這會清除所有得分詳情！")) {
+            localStorage.removeItem('poorSingCup_v3');
             location.reload();
         }
     };
